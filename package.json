@@ -24,6 +24,7 @@
     "react-native": "0.71.7",
     "react-native-calendars": "^1.1295.0",
     "react-native-encrypted-storage": "^4.0.3",
+    "react-redux": "^8.0.5",
     "redux": "^4.2.1"
   },
   "devDependencies": {
