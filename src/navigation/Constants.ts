@@ -1,0 +1,3 @@
+export const HOMESCREEN = "HOMESCREEN";
+export const CALENDERSCREEN = "CALENDERSCREEN";
+export const LEAVESCREEN = "LEAVESCREEN";

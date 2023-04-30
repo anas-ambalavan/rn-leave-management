@@ -1,0 +1,58 @@
+export const leaveItems = [
+  {
+    id: 8,
+    created_at: "2023-04-24T12:36:04.558935+00:00",
+    start_date: "2023-04-11",
+    end_date: "2023-04-25",
+    reason: "i am sick",
+  },
+  {
+    id: 9,
+    created_at: "2023-04-24T12:36:04.558935+00:00",
+    start_date: "2023-05-02",
+    end_date: "2023-05-02",
+    reason: "paid off",
+  },
+  {
+    id: 18,
+    created_at: "2023-04-27T06:51:57.729532+00:00",
+    start_date: "2023-05-16",
+    end_date: "2023-05-17",
+    reason: "i want to go to goa",
+  },
+  {
+    id: 19,
+    created_at: "2023-04-27T06:52:41.1689+00:00",
+    start_date: "2023-05-29",
+    end_date: "2023-05-31",
+    reason: "i want to go to goa",
+  },
+  {
+    id: 21,
+    created_at: "2023-04-27T07:54:41.417442+00:00",
+    start_date: "2023-06-20",
+    end_date: "2023-06-29",
+    reason: "i want to go to Moscow",
+  },
+  {
+    id: 22,
+    created_at: "2023-04-29T10:21:40.975286+00:00",
+    start_date: "2023-03-07",
+    end_date: "2023-03-11",
+    reason: "trip",
+  },
+  {
+    id: 23,
+    created_at: "2023-04-29T10:27:21.797631+00:00",
+    start_date: "2023-03-22",
+    end_date: "2023-03-29",
+    reason: "weak off",
+  },
+  {
+    id: 24,
+    created_at: "2023-04-29T14:00:46.10459+00:00",
+    start_date: "2023-01-17",
+    end_date: "2023-01-18",
+    reason: "trip",
+  },
+];
