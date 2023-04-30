@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
-import Card from "src/components/core/Card";
+import LeaveCard from "src/components/UI/LeaveCard";
 
 const HomeScreen = () => {
   return (
     <View style={{ alignItems: "center" }}>
       {/* <Text>HomeScreen</Text> */}
-      <Card />
-      <Card />
-      <Card />
+      <LeaveCard />
+      <LeaveCard />
+      <LeaveCard />
     </View>
   );
 };
