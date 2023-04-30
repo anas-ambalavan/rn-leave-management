@@ -1,18 +1,41 @@
 import React, { useEffect, useState } from "react";
 import { Text, View, StyleSheet } from "react-native";
 import { Agenda } from "react-native-calendars";
-import { MarkedDates } from "react-native-calendars/src/types";
-import { RenderItemData } from "src/interfaces/calender";
+import { DateData, MarkedDates } from "react-native-calendars/src/types";
 
+import { RenderItemData } from "src/interfaces/calender";
 import { height } from "src/constants/Sizes";
 import * as Colors from "src/constants/Colors";
 import { leaveItems } from "src/data/dummy-data";
 
 const AgendaScreen = () => {
   const [items, setItems] = useState({});
-  const [customDates, setCustomDates] = useState<MarkedDates>({});
+  const [markedDates, setMarkedDates] = useState<MarkedDates>({});
 
-  const loadItems = (day: any) => {
+  const [selectedDate, setSelectedDate] = useState("");
+
+  const onDayPress = (day: DateData) => {
+    const updatedMarkedDates = { ...markedDates };
+
+    // Reset the previously selected date's color
+    if (selectedDate) {
+      updatedMarkedDates[selectedDate] = {
+        ...updatedMarkedDates[selectedDate],
+        marked: false,
+      };
+    }
+
+    updatedMarkedDates[day.dateString] = {
+      ...updatedMarkedDates[day.dateString],
+      marked: true,
+      dotColor: Colors.primary,
+    };
+
+    setSelectedDate(day.dateString);
+    setMarkedDates(updatedMarkedDates);
+  };
+
+  const loadItems = (day: DateData) => {
     setTimeout(() => {
       const newItems: { [key: string]: RenderItemData[] } = {};
       const dateString = day.dateString;
@@ -77,7 +100,7 @@ const AgendaScreen = () => {
         }
       }
     });
-    setCustomDates(markedDates);
+    setMarkedDates(markedDates);
   };
 
   useEffect(() => {
@@ -89,6 +112,7 @@ const AgendaScreen = () => {
       items={items}
       loadItemsForMonth={loadItems}
       renderItem={renderItem}
+      onDayPress={onDayPress}
       theme={{
         agendaDayTextColor: Colors.black,
         agendaDayNumColor: Colors.primary,
@@ -96,11 +120,13 @@ const AgendaScreen = () => {
         agendaKnobColor: Colors.primary,
         selectedDayBackgroundColor: Colors.secondary,
         selectedDayTextColor: Colors.primary,
+        selectedDotColor: Colors.red,
         todayTextColor: Colors.blue,
-        selectedDotColor: Colors.primary,
+        dotColor: Colors.primary,
       }}
+      hideExtraDays={true}
       markingType={"period"}
-      markedDates={customDates}
+      markedDates={markedDates}
     />
   );
 };
