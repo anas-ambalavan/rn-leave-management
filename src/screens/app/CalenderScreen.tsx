@@ -8,7 +8,7 @@ import { height } from "src/constants/Sizes";
 import * as Colors from "src/constants/Colors";
 import { leaveItems } from "src/data/dummy-data";
 
-const AgendaScreen = () => {
+const CalenderScreen = () => {
   const [items, setItems] = useState({});
   const [markedDates, setMarkedDates] = useState<MarkedDates>({});
 
@@ -131,19 +131,19 @@ const AgendaScreen = () => {
   );
 };
 
-export default AgendaScreen;
+export default CalenderScreen;
 
 const styles = StyleSheet.create({
   renderItem: {
     justifyContent: "center",
     padding: 5,
     borderWidth: 1,
-    borderColor: "#eee",
-    backgroundColor: "white",
+    borderColor: Colors.grey,
+    backgroundColor: Colors.white,
     height: height / 10,
     marginTop: 10,
     borderRadius: 5,
-    shadowColor: "#000",
+    shadowColor: Colors.black,
     shadowOffset: {
       width: 0,
       height: 2,

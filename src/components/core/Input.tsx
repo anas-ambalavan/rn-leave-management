@@ -1,6 +1,9 @@
 import React, { useReducer, useEffect } from "react";
 import { View, Text, TextInput, StyleSheet } from "react-native";
+
 import { InputProps, InputRequiredProps } from "src/interfaces/common";
+import * as Fonts from "src/assets/fonts";
+import * as Colors from "src/constants/Colors";
 
 const INPUT_CHANGE = "INPUT_CHANGE";
 
@@ -75,21 +78,21 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   label: {
-    fontFamily: "roboto-bold",
+    fontFamily: Fonts.FONT_BOLD,
     marginVertical: 8,
   },
   input: {
     paddingHorizontal: 2,
     paddingVertical: 5,
-    borderBottomColor: "#ccc",
+    borderBottomColor: Colors.darkGrey,
     borderBottomWidth: 1,
   },
   errorContainer: {
     marginVertical: 5,
   },
   errorText: {
-    fontFamily: "roboto-light",
-    color: "red",
+    fontFamily: Fonts.FONT_BOLD,
+    color: Colors.red,
     fontSize: 13,
   },
 });

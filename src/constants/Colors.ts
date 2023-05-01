@@ -5,5 +5,7 @@ export const red = "#FF0000";
 export const blue = "#04ADF5";
 export const yellow = "#FFFF00";
 export const grey = "#eee";
+export const darkGrey = "#ccc";
+export const darkGrey5 = "#c5c5c5";
 export const black = "#000000";
 export const white = "#FFFFFF";

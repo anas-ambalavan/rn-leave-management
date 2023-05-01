@@ -252,7 +252,7 @@ const LeaveScreen = () => {
                   <Icon
                     name="calendar-outline"
                     size={20}
-                    color="#ccc"
+                    color={Colors.darkGrey}
                     style={styles.icon}
                   />
                   <Text>Start date </Text>
@@ -261,7 +261,7 @@ const LeaveScreen = () => {
                   {startDate ? (
                     startDate
                   ) : (
-                    <Text style={{ color: "#c5c5c5" }}>Select Date</Text>
+                    <Text style={{ color: Colors.darkGrey5 }}>Select Date</Text>
                   )}
                 </Text>
               </View>
@@ -270,7 +270,7 @@ const LeaveScreen = () => {
                   <Icon
                     name="calendar-outline"
                     size={20}
-                    color="#ccc"
+                    color={Colors.darkGrey}
                     style={styles.icon}
                   />
                   <Text>End date </Text>
@@ -280,7 +280,7 @@ const LeaveScreen = () => {
                   {endDate ? (
                     endDate
                   ) : (
-                    <Text style={{ color: "#c5c5c5" }}>Select Date</Text>
+                    <Text style={{ color: Colors.darkGrey5 }}>Select Date</Text>
                   )}
                 </Text>
               </View>
@@ -338,7 +338,7 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 40,
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: Colors.darkGrey,
     borderRadius: 5,
     paddingHorizontal: 10,
     marginLeft: 10,
