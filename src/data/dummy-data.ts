@@ -1,5 +1,12 @@
 export const leaveItems = [
   {
+    id: 28,
+    created_at: "2023-04-29T14:00:46.10459+00:00",
+    start_date: "2023-08-18",
+    end_date: "2023-08-21",
+    reason: "trip",
+  },
+  {
     id: 8,
     created_at: "2023-04-24T12:36:04.558935+00:00",
     start_date: "2023-04-11",
@@ -35,11 +42,25 @@ export const leaveItems = [
     reason: "i want to go to Moscow",
   },
   {
+    id: 24,
+    created_at: "2023-04-29T14:00:46.10459+00:00",
+    start_date: "2023-01-17",
+    end_date: "2023-01-18",
+    reason: "trip",
+  },
+  {
     id: 22,
     created_at: "2023-04-29T10:21:40.975286+00:00",
     start_date: "2023-03-07",
     end_date: "2023-03-11",
     reason: "trip",
+  },
+  {
+    id: 25,
+    created_at: "2023-04-29T14:00:46.10459+00:00",
+    start_date: "2022-01-17",
+    end_date: "2022-01-18",
+    reason: "sick leave",
   },
   {
     id: 23,
@@ -49,10 +70,24 @@ export const leaveItems = [
     reason: "weak off",
   },
   {
-    id: 24,
+    id: 27,
     created_at: "2023-04-29T14:00:46.10459+00:00",
-    start_date: "2023-01-17",
-    end_date: "2023-01-18",
-    reason: "trip",
+    start_date: "2022-08-01",
+    end_date: "2022-08-08",
+    reason: "paid off",
+  },
+  {
+    id: 26,
+    created_at: "2023-04-29T14:00:46.10459+00:00",
+    start_date: "2022-11-17",
+    end_date: "2022-11-18",
+    reason: "casual leave",
+  },
+  {
+    id: 28,
+    created_at: "2023-04-29T14:00:46.10459+00:00",
+    start_date: "2022-06-20",
+    end_date: "2022-06-21",
+    reason: "weak off",
   },
 ];

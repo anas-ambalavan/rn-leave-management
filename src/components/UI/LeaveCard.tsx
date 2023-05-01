@@ -4,9 +4,9 @@ import React from "react";
 import * as Colors from "src/constants/Colors";
 import * as Fonts from "src/assets/fonts";
 import { width } from "src/constants/Sizes";
-import { LeaveCardProps } from "src/interfaces/leaves";
+import { LeaveProps } from "src/interfaces/leaves";
 
-const LeaveCard = ({ start_date, end_date, reason }: LeaveCardProps) => {
+const LeaveCard = ({ start_date, end_date, reason }: LeaveProps) => {
   return (
     <View style={styles.cardContainer}>
       <View style={styles.card}>

@@ -25,3 +25,9 @@ export type InputProps = TextInputProps & {
   minLength: number;
   errorText: string;
 };
+
+export type FilterOptionProps = {
+  filter: string;
+  selectedFilter: string;
+  handleFilterSelect: (filter: string) => void;
+};
