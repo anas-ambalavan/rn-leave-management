@@ -1,56 +1,26 @@
-import { StyleSheet, Text, View } from "react-native";
 import React from "react";
-import HomeScreen from "src/screens/app/HomeScreen";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import CalenderScreen from "src/screens/app/CalenderScreen";
-import LeaveScreen from "src/screens/app/LeaveScreen";
-import { HOMESCREEN, CALENDERSCREEN, LEAVESCREEN } from "./Constants";
-import * as Colors from "src/constants/Colors";
-import { Ionicons } from "@expo/vector-icons";
-import { height } from "src/constants/Sizes";
-import { IconName } from "src/interfaces/common";
+import { useSelector } from "react-redux";
 import { NavigationContainer } from "@react-navigation/native";
 
-const BottomTabNavigator = createBottomTabNavigator();
-const AppNavigator = () => {
+import { LeavesNavigator, AuthNavigator } from "./LeavesNavigator";
+import StartupScreen from "src/screens/StartupScreen";
+import { RootState } from "src/store";
+
+const AppNavigator = (props: any) => {
+  const isAuth = useSelector(
+    (state: RootState) => !!state.authState.access_token
+  );
+  const didTryAutoLogin = useSelector(
+    (state: RootState) => state.authState.didTryAutoLogin
+  );
+
   return (
     <NavigationContainer>
-      <BottomTabNavigator.Navigator
-        screenOptions={({ route }) => ({
-          tabBarShowLabel: false,
-          tabBarActiveTintColor: Colors.primary,
-          tabBarIcon: ({ focused, color, size }) => {
-            let iconName: IconName = "md-home";
-            if (route.name === HOMESCREEN)
-              iconName = focused ? "md-home" : "md-home-outline";
-            else if (route.name === CALENDERSCREEN)
-              iconName = focused ? "md-calendar" : "md-calendar-outline";
-            else if (route.name === LEAVESCREEN)
-              iconName = focused ? "md-hand-left" : "md-hand-left-outline";
-            return <Ionicons name={iconName} size={size} color={color} />;
-          },
-          //   headerShown: false,
-          tabBarStyle: {
-            height: height / 12,
-          },
-        })}
-      >
-        <BottomTabNavigator.Screen
-          component={HomeScreen}
-          name={HOMESCREEN}
-          options={{ title: "Leaves" }}
-        />
-        <BottomTabNavigator.Screen
-          component={CalenderScreen}
-          name={CALENDERSCREEN}
-          options={{ title: "Calender" }}
-        />
-        <BottomTabNavigator.Screen
-          component={LeaveScreen}
-          name={LEAVESCREEN}
-          options={{ title: "Apply Leave" }}
-        />
-      </BottomTabNavigator.Navigator>
+      {/* <LeavesNavigator /> */}
+      {/* <AuthNavigator /> */}
+      {isAuth && <LeavesNavigator />}
+      {!isAuth && didTryAutoLogin && <AuthNavigator />}
+      {!isAuth && !didTryAutoLogin && <StartupScreen />}
     </NavigationContainer>
   );
 };

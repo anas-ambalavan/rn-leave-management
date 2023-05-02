@@ -1,3 +1,4 @@
-export const HOMESCREEN = "HOMESCREEN";
-export const CALENDERSCREEN = "CALENDERSCREEN";
-export const LEAVESCREEN = "LEAVESCREEN";
+export const HOME_SCREEN = "HOME_SCREEN";
+export const CALENDER_SCREEN = "CALENDER_SCREEN";
+export const LEAVE_SCREEN = "LEAVE_SCREEN";
+export const AUTH_SCREEN = "AUTH_SCREEN";
