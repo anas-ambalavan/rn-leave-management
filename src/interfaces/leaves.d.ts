@@ -22,3 +22,17 @@ type LeaveFiltersModalProps = {
   handleFilterSelect: (filter: string) => void;
   onApplyFilter: ({ filter, startDate, endDate }: onApplyFilterParams) => void;
 };
+
+export interface Leave {
+  id: number | string;
+  created_at: string;
+  start_date: string;
+  end_date: string;
+  reason: string | null;
+}
+
+export interface LeaveState {
+  items: Leave[];
+  loading: boolean;
+  error: string | null;
+}

@@ -9,7 +9,6 @@ import React, { useEffect, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 
 import LeaveCard from "src/components/UI/LeaveCard";
-import { leaveItems } from "src/data/dummy-data";
 import SectionHeader from "src/components/UI/SectionHeader";
 import CustomButton from "src/components/UI/CustomButton";
 import * as Colors from "src/constants/Colors";
@@ -24,6 +23,9 @@ import {
 import { onApplyFilterParams } from "src/interfaces/leaves";
 import { Ionicons } from "@expo/vector-icons";
 import { width } from "src/constants/Sizes";
+import { useSelector } from "react-redux";
+import { RootState, useAppDispatch } from "src/store";
+import { fetchLeavesAsync } from "src/store/leaveSlice";
 
 const HomeScreen = () => {
   const [showUpcoming, setShowUpcoming] = useState(true);
@@ -31,17 +33,32 @@ const HomeScreen = () => {
   const [dataToShow, setDataToShow] = useState<any>([]);
   const [selectedFilter, setSelectedFilter] = useState("");
 
+  const LeaveItems = useSelector(
+    (state: RootState) => state.leaveState.leaveState.items
+  );
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fetchLeavesAsync());
+  }, []);
+
+  useEffect(() => {
+    setDataToShow(upcomingLeaves);
+  }, [LeaveItems.length]);
+
   const today = new Date();
-  const upcomingLeaves = leaveItems
-    .slice()
-    .filter((leave) => new Date(leave.start_date) >= today)
+  const upcomingLeaves = LeaveItems.slice()
+    .filter((leave) => new Date(leave["start_date"]) >= today)
     .sort(
-      (a: any, b: any) => +new Date(a.start_date) - +new Date(b.start_date)
+      (a: any, b: any) =>
+        +new Date(a["start_date"]) - +new Date(b["start_date"])
     );
-  const pastLeaves = leaveItems
-    .slice()
-    .filter((leave) => new Date(leave.end_date) < today)
-    .sort((a: any, b: any) => +new Date(b.end_date) - +new Date(a.end_date));
+  const pastLeaves = LeaveItems.slice()
+    .filter((leave) => new Date(leave["end_date"]) < today)
+    .sort(
+      (a: any, b: any) => +new Date(b["end_date"]) - +new Date(a["end_date"])
+    );
 
   useEffect(() => {
     if (showUpcoming) setDataToShow(upcomingLeaves);
@@ -76,16 +93,20 @@ const HomeScreen = () => {
 
     switch (filter) {
       case CURRENT_MONTH:
-        filteredLeaves = leaveItems.filter((leave: any) => {
-          const leaveMonth = new Date(leave.start_date).getMonth();
-          const currentMonth = new Date().getMonth();
-          return leaveMonth === currentMonth;
+        filteredLeaves = LeaveItems.filter((leave: any) => {
+          const leaveDate = new Date(leave["start_date"]);
+          const leaveMonth = leaveDate.getMonth();
+          const leaveYear = leaveDate.getFullYear();
+          const currentDate = new Date();
+          const currentMonth = currentDate.getMonth();
+          const currentYear = currentDate.getFullYear();
+          return leaveMonth === currentMonth && leaveYear === currentYear;
         });
         break;
 
       case LAST_MONTH:
-        filteredLeaves = leaveItems.filter((leave: any) => {
-          const leaveMonth = new Date(leave.start_date).getMonth();
+        filteredLeaves = LeaveItems.filter((leave: any) => {
+          const leaveMonth = new Date(leave["start_date"]).getMonth();
           const lastMonth = new Date(
             today.getFullYear(),
             today.getMonth() - 1,
@@ -96,51 +117,45 @@ const HomeScreen = () => {
         break;
 
       case LAST_SIX_MONTHS:
-        filteredLeaves = leaveItems
-          .filter((leave: any) => {
-            const leaveDate = new Date(leave.start_date);
-            const lastSixMonthsDate = new Date(
-              today.getFullYear(),
-              today.getMonth() - 6,
-              1
-            );
-            return leaveDate >= lastSixMonthsDate && leaveDate <= today;
-          })
-          .sort(
-            (a: any, b: any) =>
-              +new Date(b.start_date) - +new Date(a.start_date)
+        filteredLeaves = LeaveItems.filter((leave: any) => {
+          const leaveDate = new Date(leave["start_date"]);
+          const lastSixMonthsDate = new Date(
+            today.getFullYear(),
+            today.getMonth() - 6,
+            1
           );
+          return leaveDate >= lastSixMonthsDate && leaveDate <= today;
+        }).sort(
+          (a: any, b: any) =>
+            +new Date(b["start_date"]) - +new Date(a["start_date"])
+        );
         break;
 
       case LAST_YEAR:
-        filteredLeaves = leaveItems
-          .filter((leave: any) => {
-            const leaveDate = new Date(leave.start_date);
-            const lastYearDate = new Date(
-              today.getFullYear() - 1,
-              today.getMonth() + 1,
-              0
-            );
-            return leaveDate >= lastYearDate && leaveDate <= today;
-          })
-          .sort(
-            (a: any, b: any) =>
-              +new Date(b.start_date) - +new Date(a.start_date)
+        filteredLeaves = LeaveItems.filter((leave: any) => {
+          const leaveDate = new Date(leave["start_date"]);
+          const lastYearDate = new Date(
+            today.getFullYear() - 1,
+            today.getMonth() + 1,
+            0
           );
+          return leaveDate >= lastYearDate && leaveDate <= today;
+        }).sort(
+          (a: any, b: any) =>
+            +new Date(b["start_date"]) - +new Date(a["start_date"])
+        );
         break;
 
       case CUSTOM_DATES:
-        filteredLeaves = leaveItems
-          .filter((leave: any) => {
-            const leaveDate = new Date(leave.start_date);
-            const startDateObj = new Date(startDate);
-            const endDateObj = new Date(endDate);
-            return leaveDate >= startDateObj && leaveDate <= endDateObj;
-          })
-          .sort(
-            (a: any, b: any) =>
-              +new Date(a.start_date) - +new Date(b.start_date)
-          );
+        filteredLeaves = LeaveItems.filter((leave: any) => {
+          const leaveDate = new Date(leave["start_date"]);
+          const startDateObj = new Date(startDate);
+          const endDateObj = new Date(endDate);
+          return leaveDate >= startDateObj && leaveDate <= endDateObj;
+        }).sort(
+          (a: any, b: any) =>
+            +new Date(a["start_date"]) - +new Date(b["start_date"])
+        );
         break;
 
       default:
