@@ -81,8 +81,8 @@ const AuthScreen = (props: any) => {
         password: formState.inputValues.password,
       });
     }
-    // setError(null);
-    // setIsLoading(true);
+    setError(null);
+    setIsLoading(true);
     try {
       await dispatch(action);
       setIsSignup(false);

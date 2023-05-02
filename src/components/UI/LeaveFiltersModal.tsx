@@ -39,8 +39,7 @@ const LeaveFiltersModal = ({
     const isValidEndDate = moment(endDate, "YYYY-MM-DD", true).isValid();
     if (
       selectedFilter === CUSTOM_DATES &&
-      !isValidStartDate &&
-      !isValidEndDate
+      (!isValidStartDate || !isValidEndDate)
     ) {
       return Alert.alert("Please enter valid dates! Format:YYYY-MM-DD ");
     }
