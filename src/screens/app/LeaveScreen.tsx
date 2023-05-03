@@ -66,16 +66,29 @@ const formReducer = (state: any, action: any) => {
   return state;
 };
 
-const LeaveScreen = () => {
+const LeaveScreen = ({ route, navigation }: any) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [isReset, setIsReset] = useState(false);
+  const [initialValue, setInitialValue] = useState("");
   const [error, setError] = useState<any | null>();
   const [startDate, setStartDate] = useState<string | null>(null);
   const [endDate, setEndDate] = useState<string | null>(null);
   const [markedDates, setMarkedDates] = useState<{
     [date: string]: any;
   }>({});
+
+  useEffect(() => {
+    if (route.params?.leaveId) {
+      const { reason, start_date, end_date } = route.params;
+      setIsEditing(true);
+      setStartDate(start_date);
+      setEndDate(end_date);
+      inputChangeHandler("start_date", start_date, true);
+      inputChangeHandler("end_date", end_date, true);
+      setInitialValue(reason);
+    }
+  }, [route]);
 
   const LeaveItems = useSelector(
     (state: RootState) => state.leaveState.leaveState.items
@@ -258,7 +271,9 @@ const LeaveScreen = () => {
     // console.log(formState);
     let action;
     if (isEditing) {
+      // console.log("Edit", route?.params?.leaveId);
       action = editLeaveAsync({
+        id: route?.params?.leaveId,
         start_date: formState.inputValues.start_date,
         end_date: formState.inputValues.end_date,
         reason: formState.inputValues.reason,
@@ -378,7 +393,7 @@ const LeaveScreen = () => {
               autoCapitalize="none"
               placeholder="Enter the reason (Optional)"
               onInputChange={inputChangeHandler}
-              initialValue=""
+              initialValue={initialValue}
               initiallyValid
               reset={isReset}
             />

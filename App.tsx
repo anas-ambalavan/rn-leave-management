@@ -7,6 +7,9 @@ import { useState } from "react";
 import AppLoading from "expo-app-loading";
 import AppNavigator from "src/navigation/AppNavigator";
 
+import { LogBox } from "react-native";
+LogBox.ignoreAllLogs();
+
 const fetchFonts = () => {
   return Font.loadAsync({
     "roboto-light": require("./src/assets/fonts/Roboto-Light.ttf"),

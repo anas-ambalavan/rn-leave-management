@@ -16,6 +16,7 @@ import Card from "src/components/core/Card";
 import * as Colors from "src/constants/Colors";
 import { useAppDispatch } from "src/store";
 import { login, signup } from "src/store/authSlice";
+import { height } from "src/constants/Sizes";
 
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
 
@@ -195,7 +196,7 @@ const styles = StyleSheet.create({
   authContainer: {
     width: "80%",
     maxWidth: 400,
-    maxHeight: 400,
+    maxHeight: height / 1.8,
     padding: 20,
   },
   buttonContainer: {
