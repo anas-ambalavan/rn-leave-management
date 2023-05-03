@@ -27,14 +27,14 @@ import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "src/store";
 import { fetchLeavesAsync } from "src/store/leaveSlice";
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }: any) => {
   const [showUpcoming, setShowUpcoming] = useState(true);
   const [isModalVisible, setModalVisible] = useState(false);
   const [dataToShow, setDataToShow] = useState<any>([]);
   const [selectedFilter, setSelectedFilter] = useState("");
 
-  const LeaveItems = useSelector(
-    (state: RootState) => state.leaveState.leaveState.items
+  const { items: LeaveItems, loading } = useSelector(
+    (state: RootState) => state.leaveState.leaveState
   );
 
   const dispatch = useAppDispatch();
@@ -45,7 +45,7 @@ const HomeScreen = () => {
 
   useEffect(() => {
     setDataToShow(upcomingLeaves);
-  }, [LeaveItems.length]);
+  }, [loading]);
 
   const today = new Date();
   const upcomingLeaves = LeaveItems.slice()
@@ -210,9 +210,11 @@ const HomeScreen = () => {
             renderItem={({ item }) => (
               <View style={{ alignItems: "center" }}>
                 <LeaveCard
+                  id={item.id}
                   start_date={item.start_date}
                   end_date={item.end_date}
                   reason={item.reason}
+                  navigation={navigation}
                 />
               </View>
             )}

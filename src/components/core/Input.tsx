@@ -42,6 +42,14 @@ const Input = (props: Partial<InputProps> & InputRequiredProps) => {
     }
   }, [props.reset]);
 
+  useEffect(() => {
+    dispatch({
+      type: INPUT_CHANGE,
+      value: props.initialValue,
+      isValid: inputState.isValid,
+    });
+  }, [props.initialValue]);
+
   const textChangeHandler = (text: string) => {
     const emailRegex =
       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

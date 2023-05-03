@@ -1,10 +1,11 @@
 export type LeaveProps = {
+  id: number;
   start_date: string;
   end_date: string;
   reason: string;
+  navigation: any;
 };
 export type LeaveItems = LeaveProps & {
-  id: number;
   created_at: string;
 };
 

@@ -32,7 +32,7 @@ export const fetchLeavesAsync = createAsyncThunk(
     } catch (error: any) {
       let message = (error as Error).message;
       if (error.response) {
-        console.log(error.response.data.error_description);
+        // console.log(error.response.data.error_description);
         message = error.response.data.error_description;
       }
       console.log("Error", error);
@@ -45,7 +45,7 @@ export const fetchLeavesAsync = createAsyncThunk(
 
 export const applyLeaveAsync = createAsyncThunk(
   "leaves/applyLeave",
-  async (data: LeaveProps, thunkAPI) => {
+  async (data: Partial<LeaveProps>, thunkAPI) => {
     try {
       const token = await getToken();
       const response = await axios.post(
@@ -79,27 +79,28 @@ export const applyLeaveAsync = createAsyncThunk(
 export const editLeaveAsync = createAsyncThunk(
   "leaves/editLeave",
   //need to edit props
-  async (data: LeaveProps, thunkAPI) => {
+  async (data: Partial<LeaveProps>, thunkAPI) => {
     try {
       const token = await getToken();
       const response = await axios.patch(
         //need to update
-        "https://dkgicggupnrxldwvkeft.supabase.co/rest/v1/leaves?id=eq.12",
+        `https://zsrzpuksbzimwhxqlddb.supabase.co/rest/v1/leaves?id=eq.${data.id}`,
         data,
         {
           headers: {
             apikey: apiKey,
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
+            Prefer: "return=representation",
           },
         }
       );
-      // console.log("response.data", response.data);
-      return response.data;
+      console.log("response.data", response.data);
+      return response.data[0];
     } catch (error: any) {
       let message = (error as Error).message;
       if (error.response) {
-        console.log(error.response.data.error_description);
+        console.log("error", error.response.data.error_description);
         message = error.response.data.error_description;
       }
       console.log("Error", error);
@@ -129,7 +130,7 @@ const leaveSlice = createSlice({
         state.leaveState.error = null;
       })
       .addCase(fetchLeavesAsync.fulfilled, (state, action) => {
-        state.leaveState.items = action.payload;
+        state.leaveState.items = state.leaveState.items.concat(action.payload);
         state.leaveState.loading = false;
         state.leaveState.error = null;
       })
@@ -148,7 +149,33 @@ const leaveSlice = createSlice({
         state.leaveState.error = null;
       })
       .addCase(applyLeaveAsync.rejected, (state, action: any) => {
-        state.leaveState.items = [];
+        state.leaveState.items = [...state.leaveState.items];
+        state.leaveState.loading = false;
+        state.leaveState.error = action.payload;
+      })
+      .addCase(editLeaveAsync.pending, (state) => {
+        state.leaveState.loading = true;
+        state.leaveState.error = null;
+      })
+      .addCase(editLeaveAsync.fulfilled, (state, { payload }) => {
+        const indexToUpdate = state.leaveState.items.findIndex(
+          (item) => item.id === payload.id
+        );
+
+        if (indexToUpdate !== -1) {
+          const items = state.leaveState.items;
+          items[indexToUpdate] = {
+            ...state.leaveState.items[indexToUpdate],
+            ...payload,
+          };
+          // console.log(){}
+          state.leaveState.items = [...items];
+          state.leaveState.loading = false;
+          state.leaveState.error = null;
+        }
+      })
+      .addCase(editLeaveAsync.rejected, (state, action: any) => {
+        state.leaveState.items = [...state.leaveState.items];
         state.leaveState.loading = false;
         state.leaveState.error = action.payload;
       });
