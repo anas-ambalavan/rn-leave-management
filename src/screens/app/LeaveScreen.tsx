@@ -137,10 +137,10 @@ const LeaveScreen = () => {
           return { ...prev };
         });
       } else if (day.dateString === startDate) {
-        setStartDate(null);
-        setEndDate(null);
-        inputChangeHandler("start_date", null, false);
-        inputChangeHandler("end_date", null, false);
+        setStartDate(day.dateString);
+        setEndDate(startDate);
+        inputChangeHandler("start_date", day.dateString, true);
+        inputChangeHandler("end_date", startDate, true);
         setMarkedDates((prev) => {
           return { ...prev };
         });
