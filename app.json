@@ -1,7 +1,8 @@
 {
   "expo": {
     "name": "rn-leave-management",
-    "slug": "rn-leave-management",
+    "slug": "leave-management-app",
+    "description":"This is a leave management app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./src/assets/icon.png",
