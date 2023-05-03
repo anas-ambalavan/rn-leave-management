@@ -24,7 +24,6 @@ const Input = (props: Partial<InputProps> & InputRequiredProps) => {
   const [inputState, dispatch] = useReducer(inputReducer, {
     value: props.initialValue ? props.initialValue : "",
     isValid: props.initiallyValid,
-    touched: false,
   });
 
   const { onInputChange, id } = props;
@@ -32,6 +31,16 @@ const Input = (props: Partial<InputProps> & InputRequiredProps) => {
   useEffect(() => {
     onInputChange(id, inputState.value, inputState.isValid);
   }, [inputState, onInputChange, id]);
+
+  useEffect(() => {
+    if (props.reset) {
+      dispatch({
+        type: INPUT_CHANGE,
+        value: "",
+        isValid: inputState.isValid,
+      });
+    }
+  }, [props.reset]);
 
   const textChangeHandler = (text: string) => {
     const emailRegex =

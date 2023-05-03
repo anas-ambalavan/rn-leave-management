@@ -11,7 +11,9 @@ const LeaveCard = ({ start_date, end_date, reason }: LeaveProps) => {
     <View style={styles.cardContainer}>
       <View style={styles.card}>
         <View style={styles.detailsContainer}>
-          <Text style={styles.reason}>{reason}</Text>
+          <Text style={styles.reason}>
+            {reason ? reason : `Reason not specified`}
+          </Text>
           <Text style={styles.date}>{`Start Date: ${start_date}`}</Text>
           <Text style={styles.date}>{`End Date: ${end_date}`}</Text>
         </View>
