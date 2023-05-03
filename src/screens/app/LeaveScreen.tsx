@@ -10,7 +10,6 @@ import {
 } from "react-native";
 import React, { useCallback, useEffect, useReducer, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
-import { useDispatch } from "react-redux";
 import Icon from "@expo/vector-icons/Ionicons";
 import { Calendar } from "react-native-calendars";
 import { eachDayOfInterval } from "date-fns";
@@ -19,10 +18,28 @@ import moment from "moment";
 import Card from "src/components/core/Card";
 import * as Colors from "src/constants/Colors";
 import Input from "src/components/core/Input";
-import { leaveItems } from "src/data/dummy-data";
+// import { leaveItems } from "src/data/dummy-data";
 import { width } from "src/constants/Sizes";
+import { applyLeaveAsync, editLeaveAsync } from "src/store/leaveSlice";
+import { RootState, useAppDispatch } from "src/store";
+import { useSelector } from "react-redux";
 
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
+const RESET_FORM = "RESET_FORM";
+
+const initialState = {
+  inputValues: {
+    start_date: "",
+    end_date: "",
+    reason: null || "",
+  },
+  inputValidities: {
+    start_date: false,
+    end_date: false,
+    reason: true,
+  },
+  formIsValid: false,
+};
 
 const formReducer = (state: any, action: any) => {
   if (action.type === FORM_INPUT_UPDATE) {
@@ -43,18 +60,26 @@ const formReducer = (state: any, action: any) => {
       inputValidities: updatedValidities,
       inputValues: updatedValues,
     };
+  } else if (action.type === RESET_FORM) {
+    return initialState;
   }
   return state;
 };
 
 const LeaveScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState();
+  const [isEditing, setIsEditing] = useState(false);
+  const [isReset, setIsReset] = useState(false);
+  const [error, setError] = useState<any | null>();
   const [startDate, setStartDate] = useState<string | null>(null);
   const [endDate, setEndDate] = useState<string | null>(null);
   const [markedDates, setMarkedDates] = useState<{
     [date: string]: any;
   }>({});
+
+  const LeaveItems = useSelector(
+    (state: RootState) => state.leaveState.leaveState.items
+  );
 
   const handleDayPress = (day: any) => {
     if (startDate && endDate) {
@@ -76,6 +101,8 @@ const LeaveScreen = () => {
       });
       setStartDate(day.dateString || null);
       setEndDate(null);
+      inputChangeHandler("start_date", day.dateString, true);
+      inputChangeHandler("end_date", null, false);
       setMarkedDates((prev) => {
         return { ...prev, ...range, ...newMarkedDates };
       });
@@ -96,18 +123,24 @@ const LeaveScreen = () => {
           // If a date is already marked, reset start and end dates
           setStartDate(null);
           setEndDate(null);
+          inputChangeHandler("start_date", null, false);
+          inputChangeHandler("end_date", null, false);
           return;
         }
       }
       if (new Date(day.dateString || "") < new Date(startDate)) {
         setStartDate(day.dateString || null);
         setEndDate(startDate);
+        inputChangeHandler("start_date", day.dateString, true);
+        inputChangeHandler("end_date", startDate, true);
         setMarkedDates((prev) => {
           return { ...prev };
         });
       } else if (day.dateString === startDate) {
         setStartDate(null);
         setEndDate(null);
+        inputChangeHandler("start_date", null, false);
+        inputChangeHandler("end_date", null, false);
         setMarkedDates((prev) => {
           return { ...prev };
         });
@@ -136,6 +169,8 @@ const LeaveScreen = () => {
           };
         });
         setEndDate(day.dateString || null);
+        inputChangeHandler("start_date", startDate, true);
+        inputChangeHandler("end_date", day.dateString, true);
         setMarkedDates((prev) => {
           return { ...prev, ...range, ...newMarkedDates };
         });
@@ -144,6 +179,8 @@ const LeaveScreen = () => {
       if (markedDates[day.dateString]) return;
       setStartDate(day.dateString || null);
       setEndDate(null);
+      inputChangeHandler("start_date", day.dateString, true);
+      inputChangeHandler("end_date", null, false);
     }
   };
 
@@ -154,32 +191,46 @@ const LeaveScreen = () => {
       textColor: Colors.primary,
       disabled: true,
     };
-    leaveItems.forEach((item) => {
-      if (item.start_date === item.end_date) {
-        markedDates[item.start_date] = {
-          ...markedDateStyles,
-          startingDay: true,
-          endingDay: true,
-        };
+    const today = new Date().toISOString().slice(0, 10);
+
+    LeaveItems.forEach((item) => {
+      // console.log(item["start_date"], item["end_date"]);
+      if (item["start_date"] === item["end_date"]) {
+        if (item["start_date"] >= today) {
+          markedDates[item["start_date"]] = {
+            ...markedDateStyles,
+            startingDay: true,
+            endingDay: true,
+          };
+        }
       } else {
-        markedDates[item.start_date] = {
-          ...markedDateStyles,
-          startingDay: true,
-        };
-        markedDates[item.end_date] = { ...markedDateStyles, endingDay: true };
+        if (item["start_date"] >= today) {
+          markedDates[item["start_date"]] = {
+            ...markedDateStyles,
+            startingDay: true,
+          };
+        }
+        if (item["end_date"] >= today) {
+          markedDates[item["end_date"]] = {
+            ...markedDateStyles,
+            endingDay: true,
+          };
+        }
         for (
-          let d = new Date(item.start_date);
-          d <= new Date(item.end_date);
+          let d = new Date(item["start_date"]);
+          d <= new Date(item["end_date"]);
           d.setDate(d.getDate() + 1)
         ) {
           const date = d.toISOString().slice(0, 10);
-          const isStartDate = date === item.start_date;
-          const isEndDate = date === item.end_date;
-          markedDates[date] = {
-            ...markedDateStyles,
-            startingDay: isStartDate,
-            endingDay: isEndDate,
-          };
+          if (date >= today) {
+            const isStartDate = date === item["start_date"];
+            const isEndDate = date === item["end_date"];
+            markedDates[date] = {
+              ...markedDateStyles,
+              startingDay: isStartDate,
+              endingDay: isEndDate,
+            };
+          }
         }
       }
     });
@@ -187,7 +238,7 @@ const LeaveScreen = () => {
     setMarkedDates(markedDates);
   };
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
@@ -202,6 +253,41 @@ const LeaveScreen = () => {
     },
     formIsValid: false,
   });
+
+  const applyHandler = async () => {
+    // console.log(formState);
+    let action;
+    if (isEditing) {
+      action = editLeaveAsync({
+        start_date: formState.inputValues.start_date,
+        end_date: formState.inputValues.end_date,
+        reason: formState.inputValues.reason,
+      });
+    } else {
+      action = applyLeaveAsync({
+        start_date: formState.inputValues.start_date,
+        end_date: formState.inputValues.end_date,
+        reason: formState.inputValues.reason,
+      });
+    }
+    setError(null);
+    setIsLoading(true);
+    try {
+      await dispatch(action);
+      setIsEditing(false);
+      setIsLoading(false);
+    } catch (err: any) {
+      setError(err.message);
+      setIsLoading(false);
+    }
+    dispatchFormState({ type: RESET_FORM });
+    setIsReset(true);
+    setEndDate("");
+    setStartDate("");
+    setTimeout(() => {
+      setIsReset(false);
+    }, 2000);
+  };
 
   const inputChangeHandler = useCallback(
     (inputIdentifier: any, inputValue: any, inputValidity: any) => {
@@ -293,12 +379,19 @@ const LeaveScreen = () => {
               placeholder="Enter the reason (Optional)"
               onInputChange={inputChangeHandler}
               initialValue=""
+              initiallyValid
+              reset={isReset}
             />
             <View style={styles.buttonContainer}>
               {isLoading ? (
                 <ActivityIndicator size="small" color={Colors.primary} />
               ) : (
-                <Button title={"Apply"} color={Colors.primary} />
+                <Button
+                  title={"Apply"}
+                  onPress={applyHandler}
+                  disabled={!formState.formIsValid}
+                  color={Colors.primary}
+                />
               )}
             </View>
           </ScrollView>

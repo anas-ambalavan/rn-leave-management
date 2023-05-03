@@ -24,6 +24,7 @@ export type InputProps = TextInputProps & {
   max: number;
   minLength: number;
   errorText: string;
+  reset: boolean;
 };
 
 export type FilterOptionProps = {
