@@ -3,7 +3,7 @@
     "name": "rn-leave-management",
     "slug": "leave-management-app",
     "description":"This is a leave management app",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./src/assets/icon.png",
     "userInterfaceStyle": "light",
