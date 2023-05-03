@@ -6,11 +6,17 @@ import { DateData, MarkedDates } from "react-native-calendars/src/types";
 import { RenderItemData } from "src/interfaces/calender";
 import { height } from "src/constants/Sizes";
 import * as Colors from "src/constants/Colors";
-import { leaveItems } from "src/data/dummy-data";
+import { RootState } from "src/store";
+import { useSelector } from "react-redux";
+// import { leaveItems } from "src/data/dummy-data";
 
 const CalenderScreen = () => {
   const [items, setItems] = useState({});
   const [markedDates, setMarkedDates] = useState<MarkedDates>({});
+
+  const { items: LeaveItems, loading } = useSelector(
+    (state: RootState) => state.leaveState.leaveState
+  );
 
   const [selectedDate, setSelectedDate] = useState("");
 
@@ -39,7 +45,7 @@ const CalenderScreen = () => {
     setTimeout(() => {
       const newItems: { [key: string]: RenderItemData[] } = {};
       const dateString = day.dateString;
-      const dayItems = leaveItems.filter((item) => {
+      const dayItems = LeaveItems.filter((item) => {
         return (
           item.start_date <= dateString &&
           item.end_date >= dateString &&
@@ -74,7 +80,7 @@ const CalenderScreen = () => {
       color: Colors.secondary,
       textColor: Colors.primary,
     };
-    leaveItems.forEach((item) => {
+    LeaveItems.forEach((item) => {
       if (item.start_date === item.end_date) {
         markedDates[item.start_date] = {
           ...markedDateStyles,
