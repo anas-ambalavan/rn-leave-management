@@ -22,7 +22,9 @@ export const login = createAsyncThunk(
       );
       // console.log("response.data", response.data);
       // response.data.expires_in
-      const expirationDate = new Date(+new Date().getTime() + 1860 * 1000);
+      const expirationDate = new Date(
+        +new Date().getTime() + response.data.expires_in * 1000
+      );
       saveToEncryptedStorage(
         response.data.access_token,
         response.data.refresh_token,

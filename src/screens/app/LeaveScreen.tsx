@@ -329,22 +329,6 @@ const LeaveScreen = ({ route, navigation }: any) => {
         colors={[Colors.secondary, Colors.accent]}
         style={styles.gradient}
       >
-        <View style={styles.calendar}>
-          <Calendar
-            minDate={
-              endDate
-                ? moment(endDate).add(1, "days").format("YYYY-MM-DD")
-                : new Date().toISOString().slice(0, 10)
-            }
-            theme={{
-              selectedDayBackgroundColor: Colors.secondary,
-              selectedDayTextColor: Colors.primary,
-            }}
-            markedDates={markedDates}
-            onDayPress={handleDayPress}
-            hideExtraDays={true}
-          />
-        </View>
         <Card style={styles.cardContainer}>
           <ScrollView>
             <View>
@@ -411,6 +395,22 @@ const LeaveScreen = ({ route, navigation }: any) => {
             </View>
           </ScrollView>
         </Card>
+        <View style={styles.calendar}>
+          <Calendar
+            minDate={
+              endDate
+                ? moment(endDate).add(1, "days").format("YYYY-MM-DD")
+                : new Date().toISOString().slice(0, 10)
+            }
+            theme={{
+              selectedDayBackgroundColor: Colors.secondary,
+              selectedDayTextColor: Colors.primary,
+            }}
+            markedDates={markedDates}
+            onDayPress={handleDayPress}
+            hideExtraDays={true}
+          />
+        </View>
       </LinearGradient>
     </KeyboardAvoidingView>
   );
@@ -461,6 +461,6 @@ const styles = StyleSheet.create({
   },
   calendar: {
     width: width * 0.9,
-    marginBottom: 10,
+    marginTop: 10,
   },
 });
