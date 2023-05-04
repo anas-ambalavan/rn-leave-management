@@ -15,7 +15,9 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "jsEngine": "hermes",
     "ios": {
+      "jsEngine": "jsc",
       "supportsTablet": true,
       "config": {
         "usesNonExemptEncryption": false
