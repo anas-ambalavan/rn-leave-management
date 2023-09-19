@@ -1,5 +1,10 @@
 # Leave Management App
 > A leave management app using react native expo-cli
+
+## App Demo and Screenshot
+<img src="https://github.com/anas-ambalavan/rn-leave-management/assets/37231440/17c86616-d44d-4c88-896c-26c45e977bc3" width=250 /><br>
+- [App Demo Link](https://drive.google.com/file/d/1vquDoiMFEgQO2y8gHWuubzeHFEwdzuEw/view?usp=sharing)
+
 ## Quick Start
 ``` bash
   # Install dependencies
