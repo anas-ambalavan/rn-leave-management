@@ -3,7 +3,7 @@
 
 ## App Demo and Screenshot
 <img src="https://github.com/anas-ambalavan/rn-leave-management/assets/37231440/17c86616-d44d-4c88-896c-26c45e977bc3" width=250 /><br>
-- [App Demo Link](https://drive.google.com/file/d/1vquDoiMFEgQO2y8gHWuubzeHFEwdzuEw/view?usp=sharing)
+- [App Demo Link](https://res.cloudinary.com/ddfefbg1v/video/upload/v1695119539/App%20Demo/rn-leave-management_iosvky.mp4)
 
 ## Quick Start
 ``` bash
